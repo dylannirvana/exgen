@@ -1,6 +1,24 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+const { auth } = require('express-openid-connect');
+
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: 'JACSIsiZUFjPTYQ9Au5r49TtEfup4SMXfN0oCvGkA6sEtm5SilviUZQtOoG7nCd2',
+  baseURL: 'https://exgen-bonzo.herokuapp.com',
+  clientID: 'xnPvwSZAsQjoljVFkR3IAZ8HiRctWOpv',
+  issuerBaseURL: 'https://soft-field-6236.us.auth0.com'
+};
+
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config));
+
+// req.isAuthenticated is provided from the auth router
+app.get('/', (req, res) => {
+  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+});
 
 // var cookieParser = require('cookie-parser');
 // var logger = require('morgan');
