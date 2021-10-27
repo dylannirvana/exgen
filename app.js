@@ -61,6 +61,12 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
+const { requiresAuth } = require('express-openid-connect');
+
+app.get('/profile', requiresAuth(), (req, res) => {
+  res.send(JSON.stringify(req.oidc.user));
+});
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
